@@ -1,6 +1,5 @@
 import { collection, getDocs, doc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-const db = window.db;
 const flagDisplay = document.getElementById('flag-display');
 const answerInput = document.getElementById('answer-input');
 const submitBtn = document.getElementById('submit-btn');
@@ -12,9 +11,19 @@ let allFlags = [];
 let currentFlag = null;
 
 async function loadGame() {
-    const querySnapshot = await getDocs(collection(db, "flags"));
-    allFlags = querySnapshot.docs.map(d => ({ id: d.id, ...d.data() }));
-    renderRound();
+    try {
+        // הגדרת db בתוך הפונקציה כדי לוודא שהוא זמין מ-window
+        const db = window.db;
+        const querySnapshot = await getDocs(collection(db, "flags"));
+        allFlags = querySnapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+        
+        if (allFlags.length > 0) {
+            renderRound();
+        }
+    } catch (error) {
+        console.error("Error loading flags:", error);
+        messageDisplay.innerText = "שגיאה בחיבור לנתונים";
+    }
 }
 
 function renderRound() {
@@ -26,6 +35,7 @@ function renderRound() {
 }
 
 async function checkAnswer() {
+    const db = window.db;
     const userAnswer = answerInput.value.trim().toLowerCase();
     const correctAnswer = currentFlag.name.toLowerCase();
     const flagRef = doc(db, "flags", currentFlag.id);
