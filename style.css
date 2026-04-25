@@ -1,1 +1,76 @@
+/* הגדרות כלליות */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100-vh;
+    color: #333;
+}
 
+.game-container {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+}
+
+/* שורת הנתונים - טיימר וניקוד */
+header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+#timer span { color: #e74c3c; }
+#score span { color: #2ecc71; }
+
+/* תצוגת הדגל */
+#flag-display {
+    font-size: 5rem; /* זמני, עד שנעלה תמונות */
+    margin: 30px 0;
+    min-height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+/* כפתורי התשובות */
+#options-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+button {
+    padding: 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    background-color: #fff;
+    border: 2px solid #3498db;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+button:hover {
+    background-color: #3498db;
+    color: white;
+}
+
+/* הודעות (נכון / לא נכון) */
+#message {
+    margin-top: 20px;
+    font-weight: bold;
+    min-height: 24px;
+}
