@@ -3,35 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>משחק הדגלים הדינמי</title>
+    <title>משחק הדגלים - גרסה סופית</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
     <div class="game-container">
         <header>
-            <div id="timer">זמן: <span>30</span></div>
             <div id="score">ניקוד: <span>0</span></div>
         </header>
 
         <main>
-            <div id="flag-display">
-                <p>טוען דגל...</p>
+            <div id="flag-display">טוען...</div>
+            
+            <div id="input-container">
+                <input type="text" id="answer-input" placeholder="איזו מדינה זו?">
+                <button id="submit-btn">בדוק תשובה</button>
             </div>
-
-            <div id="options-container">
-                </div>
         </main>
 
         <div id="message"></div>
     </div>
 
     <script type="module">
-        // ייבוא הפונקציות שצריך מתוך Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        // הגדרות הפרויקט שלך
         const firebaseConfig = {
             apiKey: "AIzaSyDT7Zbwx32Sspd-LgdSlsA9tze7N-p_UMo",
             authDomain: "flags-495f6.firebaseapp.com",
@@ -41,14 +37,9 @@
             appId: "1:549882916506:web:8b83984f3a797e902e7923"
         };
 
-        // אתחול Firebase
         const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        // חיבור לקובץ הלוגיקה שלנו
-        window.db = db;
+        window.db = getFirestore(app);
     </script>
-    
     <script type="module" src="script.js"></script>
 </body>
 </html>
