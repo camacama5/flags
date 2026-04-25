@@ -1,6 +1,6 @@
 import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-// חיבור לבסיס הנתונים שהגדרנו ב-HTML
+// חיבור לבסיס הנתונים (מגיע מהקובץ index.html)
 const db = window.db;
 
 // חיבור לאלמנטים במסך
@@ -12,7 +12,7 @@ const scoreDisplay = document.querySelector('#score span');
 let score = 0;
 let allFlags = [];
 
-// 1. פונקציה למשיכת המדינות מה-Firebase
+// פונקציה ראשונה: משיכת המדינות מה-Database
 async function loadGame() {
     try {
         const querySnapshot = await getDocs(collection(db, "flags"));
@@ -27,24 +27,27 @@ async function loadGame() {
             flagDisplay.innerHTML = "צריך להוסיף מדינות ב-Firebase!";
         }
     } catch (e) {
-        console.error("Error: ", e);
+        console.error("שגיאה בטעינת נתונים: ", e);
         messageDisplay.innerText = "שגיאה בחיבור לנתונים";
     }
 }
 
-// 2. פונקציה להצגת סיבוב (דגל וכפתורים)
+// פונקציה שנייה: הצגת דגל ותשובות
 function renderRound() {
     optionsContainer.innerHTML = "";
     messageDisplay.innerText = "";
 
-    // בוחרים דגל אקראי ממה שיש ב-Database
+    // בחירת מדינה אקראית
     const randomIndex = Math.floor(Math.random() * allFlags.length);
     const currentFlag = allFlags[randomIndex];
 
-    // מציגים את שם המדינה כרגע (עד שנעלה תמונות אמיתיות)
-    flagDisplay.innerText = "דגל של: " + currentFlag.name;
+    // כאן הקסם קורה: הפיכת ה-code (כמו il) לתמונה של דגל
+    flagDisplay.innerHTML = `
+        <img src="https://flagcdn.com/w320/${currentFlag.code}.png" 
+             style="max-width: 100%; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+    `;
 
-    // יוצרים כפתור לכל מדינה שיש לנו במאגר
+    // יצירת כפתור לכל מדינה שיש לנו
     allFlags.forEach(flag => {
         const button = document.createElement('button');
         button.innerText = flag.name;
@@ -53,21 +56,19 @@ function renderRound() {
     });
 }
 
-// 3. בדיקת התשובה ועדכון ניקוד
+// פונקציה שלישית: בדיקת התשובה
 function checkAnswer(selected, correct) {
     if (selected === correct) {
         score += 10;
         scoreDisplay.innerText = score;
-        messageDisplay.innerText = "נכון! כל הכבוד!";
+        messageDisplay.innerText = "נכון! כל הכבוד! 🎯";
         messageDisplay.style.color = "green";
-        
-        // מחכים שנייה ועוברים לדגל הבא
         setTimeout(renderRound, 1000);
     } else {
-        messageDisplay.innerText = "טעות, נסה שוב!";
+        messageDisplay.innerText = "טעות, נסה שוב! ❌";
         messageDisplay.style.color = "red";
     }
 }
 
-// הפעלת המשחק
+// הפעלת המשחק בפעם הראשונה
 loadGame();
